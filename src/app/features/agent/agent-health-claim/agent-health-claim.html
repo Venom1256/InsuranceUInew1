@@ -1,0 +1,240 @@
+<div class="card shadow mt-4">
+
+    <div class="card-header bg-success text-white">
+
+        <h4> Raise Health Claim </h4>
+
+    </div>
+
+    <div class="card-body">
+
+        <div class="mb-3">
+
+            <label class="form-label fw-bold">
+                Select Customer
+            </label>
+
+            <select
+                class="form-select"
+                [(ngModel)]="selectedCustomerId"
+                (change)="onCustomerChange()">
+
+                <option [value]="0">
+                    Select Customer
+                </option>
+
+                <option
+                    *ngFor="let customer of customers"
+                    [value]="customer.customerId">
+                    {{ customer.fullName }}
+                </option>
+
+            </select>
+
+        </div>
+
+        <div
+            *ngIf="selectedCustomer"
+            class="alert alert-primary">
+
+            <div class="row">
+
+                <div class="col-md-4">
+                    <strong>Name:</strong>
+                    {{ selectedCustomer.fullName }}
+                </div>
+
+                <div class="col-md-4">
+                    <strong>Email:</strong>
+                    {{ selectedCustomer.email }}
+                </div>
+
+                <div class="col-md-4">
+                    <strong>Mobile:</strong>
+                    {{ selectedCustomer.mobileNumber }}
+                </div>
+
+            </div>
+
+        </div>
+
+        <div
+            *ngIf="policies.length > 0"
+            class="card border-success mb-4">
+
+            <div class="card-header bg-light">
+                <strong>
+                    Customer Policies
+                </strong>
+            </div>
+
+            <div class="card-body p-0">
+
+                <table
+                    class="table table-bordered table-hover mb-0">
+
+                    <thead class="table-dark">
+
+                        <tr>
+
+                            <th>Select</th>
+                            <th>Policy Number</th>
+                            <th>Product</th>
+                            <th>Coverage Amount</th>
+                            <th>Remaining Coverage</th>
+                            <th>Premium Amount</th>
+                            <th>Status</th>
+
+                        </tr>
+
+                    </thead>
+
+                    <tbody>
+
+                        <tr
+                            *ngFor="let policy of policies"
+                            [class.table-success]="policy.policyId === claim.policyId">
+
+                            <td>
+                                <button
+                                    class="btn btn-primary btn-sm"
+                                    (click)="selectPolicy(policy)">
+                                    Select
+                                </button>
+                            </td>
+
+                            <td>
+                                {{ policy.policyNumber }}
+                            </td>
+
+                            <td>
+                                {{ policy.productName }}
+                            </td>
+
+                            <td>
+                                ₹{{ policy.coverageAmount }}
+                            </td>
+
+                            <td>
+                                ₹{{ policy.remainingCoverageAmount }}
+                            </td>
+
+                            <td>
+                                ₹{{ policy.premiumAmount }}
+                            </td>
+
+                            <td>
+                                <span
+                                    class="badge bg-success"
+                                    *ngIf="policy.status === 'Active'">
+                                    Active
+                                </span>
+
+                                <span
+                                    class="badge bg-danger"
+                                    *ngIf="policy.status !== 'Active'">
+                                    {{ policy.status }}
+                                </span>
+
+                            </td>
+
+                        </tr>
+
+                    </tbody>
+
+                </table>
+
+            </div>
+
+        </div>
+
+        <div
+            *ngIf="selectedPolicy"
+            class="alert alert-success">
+
+            <div class="row">
+
+                <div class="col-md-3">
+                    <strong>Policy:</strong>
+                    {{ selectedPolicy.policyNumber }}
+                </div>
+
+                <div class="col-md-3">
+                    <strong>Product:</strong>
+                    {{ selectedPolicy.productName }}
+                </div>
+
+                <div class="col-md-3">
+                    <strong>Coverage:</strong>
+                    ₹{{ selectedPolicy.coverageAmount }}
+                </div>
+
+                <div class="col-md-3">
+                    <strong>Remaining:</strong>
+                    ₹{{ selectedPolicy.remainingCoverageAmount }}
+                </div>
+
+            </div>
+
+        </div>
+
+        <div class="mb-3">
+
+            <label class="form-label fw-bold">
+                Claim Amount
+            </label>
+
+            <input
+                type="number"
+                class="form-control"
+                [(ngModel)]="claim.claimAmount">
+
+            <small
+                *ngIf="
+                    selectedPolicy &&
+                    claim.claimAmount >
+                    selectedPolicy.remainingCoverageAmount
+                "
+                class="text-danger">
+
+                Claim Amount cannot exceed Remaining Coverage Amount.
+
+            </small>
+
+        </div>>
+
+        <div class="mb-3">
+
+            <label class="form-label fw-bold">
+
+                Claim Reason
+
+            </label>
+
+            <textarea
+                class="form-control"
+                rows="4"
+                [(ngModel)]="claim.claimReason">
+            </textarea>
+
+        </div>
+
+
+        <button
+            class="btn btn-success w-100"
+            [disabled]="
+                claim.policyId === 0 ||
+                claim.claimAmount <= 0 ||
+                (
+                    selectedPolicy &&
+                    claim.claimAmount >
+                    selectedPolicy.remainingCoverageAmount
+                )
+            "
+            (click)="raiseClaim()">
+            Raise Claim
+        </button>
+
+    </div>
+
+</div>

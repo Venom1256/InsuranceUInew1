@@ -1,0 +1,320 @@
+<div class="container-fluid mt-4">
+
+  <div class="card shadow">
+
+    <div class="card-header bg-danger text-white">
+
+      <h3 class="mb-0">
+
+        Upload Life Claim Documents
+
+      </h3>
+
+    </div>
+
+    <div class="card-body">
+
+      <!-- CUSTOMER -->
+
+      <div class="mb-3">
+
+        <label class="form-label fw-bold">
+
+          Select Customer
+
+        </label>
+
+        <select
+          class="form-select"
+          [(ngModel)]="selectedCustomerId"
+          (change)="onCustomerChange()">
+
+          <option [value]="0">
+
+            Select Customer
+
+          </option>
+
+          <option
+            *ngFor="let customer of customers"
+            [value]="customer.customerId">
+
+            {{ customer.fullName }}
+
+          </option>
+
+        </select>
+
+      </div>
+
+      <!-- CUSTOMER DETAILS -->
+
+      <div
+        *ngIf="selectedCustomer"
+        class="alert alert-danger">
+
+        <div class="row">
+
+          <div class="col-md-4">
+
+            <strong>Name:</strong>
+
+            {{ selectedCustomer.fullName }}
+
+          </div>
+
+          <div class="col-md-4">
+
+            <strong>Email:</strong>
+
+            {{ selectedCustomer.email }}
+
+          </div>
+
+          <div class="col-md-4">
+
+            <strong>Mobile:</strong>
+
+            {{ selectedCustomer.mobileNumber }}
+
+          </div>
+
+        </div>
+
+      </div>
+
+      <!-- CLAIMS -->
+
+      <div
+        *ngIf="claims.length > 0"
+        class="card border-danger mb-3">
+
+        <div class="card-header bg-light">
+
+          Customer Life Claims
+
+        </div>
+
+        <div class="card-body p-0">
+
+          <table class="table table-bordered mb-0">
+
+            <thead class="table-dark">
+
+              <tr>
+
+                <th>Select</th>
+                <th>Claim Id</th>
+                <th>Policy Number</th>
+                <th>Claim Amount</th>
+                <th>Status</th>
+
+              </tr>
+
+            </thead>
+
+            <tbody>
+
+              <tr *ngFor="let claim of claims">
+
+                <td>
+
+                  <button
+                    class="btn btn-danger btn-sm"
+                    (click)="selectClaim(claim)">
+
+                    Select
+
+                  </button>
+
+                </td>
+
+                <td>{{ claim.claimId }}</td>
+
+                <td>{{ claim.policyNumber }}</td>
+
+                <td>₹{{ claim.claimAmount }}</td>
+
+                <td>{{ claim.status }}</td>
+
+              </tr>
+
+            </tbody>
+
+          </table>
+
+        </div>
+
+      </div>
+
+      <!-- CLAIM DETAILS -->
+
+      <div
+        *ngIf="selectedClaim"
+        class="alert alert-success">
+
+        <div class="row">
+
+          <div class="col-md-3">
+
+            <strong>Claim Id:</strong>
+
+            {{ selectedClaim.claimId }}
+
+          </div>
+
+          <div class="col-md-3">
+
+            <strong>Policy:</strong>
+
+            {{ selectedClaim.policyNumber }}
+
+          </div>
+
+          <div class="col-md-3">
+
+            <strong>Amount:</strong>
+
+            ₹{{ selectedClaim.claimAmount }}
+
+          </div>
+
+          <div class="col-md-3">
+
+            <strong>Status:</strong>
+
+            {{ selectedClaim.status }}
+
+          </div>
+
+        </div>
+
+      </div>
+
+      <!-- DOCUMENT TYPE -->
+
+      <div class="mb-3">
+
+        <label class="form-label fw-bold">
+
+          Select Document Type
+
+        </label>
+
+        <select
+          class="form-select"
+          [(ngModel)]="documentType">
+
+          <option value="">
+
+            Select Document
+
+          </option>
+
+          <option
+            *ngFor="let doc of availableDocuments"
+            [value]="doc">
+
+            {{ doc }}
+
+          </option>
+
+        </select>
+
+      </div>
+
+      <!-- FILE -->
+
+      <div class="mb-3">
+
+        <label class="form-label fw-bold">
+
+          Choose File
+
+        </label>
+
+        <input
+          type="file"
+          class="form-control"
+          (change)="onFileSelected($event)">
+
+      </div>
+
+      <button
+        class="btn btn-danger w-100"
+        (click)="uploadDocument()">
+
+        Upload Document
+
+      </button>
+
+      <hr>
+
+      <div class="table-responsive">
+
+        <table class="table table-bordered table-hover">
+
+          <thead class="table-dark">
+
+            <tr>
+
+              <th>Document Type</th>
+              <th>File Name</th>
+              <th>Status</th>
+              <th>Remark</th>
+              <th>View</th>
+              <th>Download</th>
+
+            </tr>
+
+          </thead>
+
+          <tbody>
+
+            <tr *ngFor="let doc of documents">
+
+              <td>{{ doc.documentType }}</td>
+
+              <td>{{ doc.fileName }}</td>
+
+              <td>{{ doc.status }}</td>
+
+              <td>{{ doc.remark || '-' }}</td>
+
+              <td>
+
+                <button
+                  class="btn btn-info btn-sm"
+                  (click)="viewDocument(doc.documentId)">
+
+                  View
+
+                </button>
+
+              </td>
+
+              <td>
+
+                <button
+                  class="btn btn-success btn-sm"
+                  (click)="downloadDocument(doc.documentId)">
+
+                  Download
+
+                </button>
+
+              </td>
+
+            </tr>
+
+          </tbody>
+
+        </table>
+
+      </div>
+
+    </div>
+
+  </div>
+
+</div>

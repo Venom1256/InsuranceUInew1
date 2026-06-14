@@ -1,0 +1,116 @@
+<div class="container-fluid mt-4">
+
+    <div class="card shadow">
+
+        <div class="card-header bg-primary text-white">
+
+            <h3>Health Claim Verification</h3>
+
+        </div>
+
+        <div class="card-body">
+
+            <div class="row mb-3">
+
+                <div class="col-md-3">
+                    <strong>Claim Id :</strong>
+                    {{ claim.claimId }}
+                </div>
+
+                <div class="col-md-3">
+                    <strong>Policy Number :</strong>
+                    {{ claim.policyNumber }}
+                </div>
+
+                <div class="col-md-3">
+                    <strong>Status :</strong>
+                    {{ claim.status }}
+                </div>
+
+                <div class="col-md-3">
+                    <strong>Claim Amount :</strong>
+                    {{ claim.claimAmount }}
+                </div>
+
+            </div>
+
+            <table class="table table-bordered table-hover">
+
+                <thead class="table-dark">
+
+                    <tr>
+
+                        <th>Document Type</th>
+                        <th>View</th>
+                        <th>Status</th>
+                        <th>Remark</th>
+                        <th>Approve</th>
+                        <th>Reject</th>
+
+                    </tr>
+
+                </thead>
+
+                <tbody>
+
+                    <tr *ngFor="let doc of documents">
+
+                        <td>{{ doc.documentType }}</td>
+                        <td>
+
+                            <button class="btn btn-info btn-sm" (click)="viewDocument(doc.documentId)">
+                                View
+                            </button>
+
+                        </td>
+                        <td>
+                            <span class="badge bg-warning" *ngIf="doc.status === 'Pending'">
+                                Pending
+                            </span>
+
+                            <span class="badge bg-success" *ngIf="doc.status === 'Approved'">
+                                Approved
+                            </span>
+
+                            <span class="badge bg-danger" *ngIf="doc.status === 'Rejected'">
+                                Rejected
+                            </span>
+                        </td>
+                        <td>
+                            <input
+                                type="text"
+                                class="form-control"
+                                [(ngModel)]="remarks[doc.documentId]">
+                        </td>
+                        <td>
+                            <button class="btn btn-success btn-sm" (click)="approveDocument(doc.documentId)" [disabled]="doc.status === 'Approved'">
+                                Approve
+                            </button>
+                        </td>
+
+                        <td>
+                            <button class="btn btn-danger btn-sm" (click)="rejectDocument(doc.documentId)" [disabled]="doc.status === 'Rejected'">
+                                Reject
+                            </button>
+                        </td>
+
+                    </tr>
+
+                    <tr *ngIf="documents.length === 0">
+                        <td
+                            colspan="6"
+                            class="text-center text-muted">
+                            No documents found
+                        </td>
+
+                    </tr>
+
+                </tbody>
+
+            </table>
+
+        </div>
+
+    </div>
+
+</div>

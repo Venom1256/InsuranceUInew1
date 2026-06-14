@@ -1,0 +1,131 @@
+<div class="admin-container">
+  <h2>Address Management (Admin)</h2>
+
+  <!-- Statistics -->
+  <div class="stats-grid">
+    <div class="stat-card">
+      <h4>TOTAL ADDRESSES</h4>
+      <p class="stat-value">{{ totalAddresses }}</p>
+    </div>
+    <div class="stat-card">
+      <h4>TOTAL CUSTOMERS</h4>
+      <p class="stat-value">{{ totalCustomers }}</p>
+    </div>
+  </div>
+
+  <!-- Toolbar -->
+  <div class="toolbar">
+    <div class="search-box">
+      <input 
+        [(ngModel)]="searchText" 
+        (input)="applyFilters()" 
+        placeholder="Search by address..." 
+      />
+      <button class="btn-search" (click)="applyFilters()">🔍</button>
+    </div>
+    
+    <div class="filter-field">
+      <label>Customer ID</label>
+      <input 
+        type="text" 
+        [(ngModel)]="filterCustomerId" 
+        (input)="applyFilters()" 
+        placeholder="Customer ID" 
+      />
+    </div>
+
+    <div class="filter-field">
+      <label>City</label>
+      <select [(ngModel)]="filterCity" (change)="applyFilters()">
+        <option value="">All Cities</option>
+        <option *ngFor="let city of uniqueCities" [value]="city">{{ city }}</option>
+      </select>
+    </div>
+
+    <div class="filter-field">
+      <label>State</label>
+      <select [(ngModel)]="filterState" (change)="applyFilters()">
+        <option value="">All States</option>
+        <option *ngFor="let state of uniqueStates" [value]="state">{{ state }}</option>
+      </select>
+    </div>
+
+    <div class="filter-field">
+      <label>Pincode</label>
+      <select [(ngModel)]="filterPincode" (change)="applyFilters()">
+        <option value="">All Pincodes</option>
+        <option *ngFor="let pin of uniquePincodes" [value]="pin">{{ pin }}</option>
+      </select>
+    </div>
+
+    <button class="btn-reset" (click)="resetFilters()">Reset</button>
+  </div>
+
+  <!-- Table -->
+  <div class="table-card" *ngIf="!loading">
+    <div class="table-header">
+      <span>Showing {{ paginatedAddresses.length }} of {{ filteredAddresses.length }} addresses</span>
+      <div class="page-size">
+        <label>Page Size:</label>
+        <select (change)="onPageSizeChange(+$any($event.target).value)">
+          <option [value]="5">5</option>
+          <option [value]="10" selected>10</option>
+          <option [value]="20">20</option>
+          <option [value]="50">50</option>
+        </select>
+      </div>
+    </div>
+
+    <table class="data-table">
+      <thead>
+        <tr>
+          <th (click)="sort('addressId')">ID {{ getSortIcon('addressId') }}</th>
+          <th (click)="sort('customerId')">CUSTOMER ID {{ getSortIcon('customerId') }}</th>
+          <th (click)="sort('addressLine1')">ADDRESS {{ getSortIcon('addressLine1') }}</th>
+          <th (click)="sort('city')">CITY {{ getSortIcon('city') }}</th>
+          <th (click)="sort('state')">STATE {{ getSortIcon('state') }}</th>
+          <th (click)="sort('pincode')">PINCODE {{ getSortIcon('pincode') }}</th>
+          <th>ACTIONS</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr *ngFor="let address of paginatedAddresses">
+          <td>{{ address.addressId }}</td>
+          <td>{{ address.customerId }}</td>
+          <td>
+            {{ address.addressLine1 }}
+            <span *ngIf="address.addressLine2" class="address-line2">{{ address.addressLine2 }}</span>
+          </td>
+          <td>{{ address.city }}</td>
+          <td>{{ address.state }}</td>
+          <td>{{ address.pincode }}</td>
+          <td class="actions">
+            <button class="btn-view" (click)="viewAddress(address)" title="View">👁 View</button>
+          </td>
+        </tr>
+        <tr *ngIf="paginatedAddresses.length === 0">
+          <td colspan="7" class="no-data">No addresses found.</td>
+        </tr>
+      </tbody>
+    </table>
+
+    <!-- Pagination -->
+    <div class="pagination" *ngIf="totalPages > 1">
+      <button [disabled]="currentPage === 1" (click)="goToPage(currentPage - 1)">Previous</button>
+      <button 
+        *ngFor="let page of pages" 
+        [class.active]="page === currentPage" 
+        (click)="goToPage(page)"
+      >
+        {{ page }}
+      </button>
+      <button [disabled]="currentPage === totalPages" (click)="goToPage(currentPage + 1)">Next</button>
+    </div>
+  </div>
+
+  <div class="loading" *ngIf="loading">
+    <p>Loading addresses...</p>
+  </div>
+
+  <div *ngIf="message" class="alert" [class.error]="isError">{{ message }}</div>
+</div>

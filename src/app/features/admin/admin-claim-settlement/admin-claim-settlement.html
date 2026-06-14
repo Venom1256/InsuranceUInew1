@@ -1,0 +1,135 @@
+<div class="container-fluid mt-4">
+
+  <div class="card shadow">
+
+    <div class="card-header bg-primary text-white">
+
+      <h3>
+        Claim Settlement
+      </h3>
+
+    </div>
+
+    <div class="card-body">
+
+      <table
+        class="table table-bordered table-hover">
+
+        <thead class="table-dark">
+
+          <tr>
+
+            <th>Claim ID</th>
+            <th>Policy ID</th>
+            <th>Policy Number</th>
+            <th>Product Type</th>
+            <th>Claim Amount</th>
+            <th>Approved Amount</th>
+            <th>Action</th>
+
+          </tr>
+
+        </thead>
+
+        <tbody>
+
+          <tr *ngFor="let claim of claims">
+
+            <td>{{ claim.claimId }}</td>
+            <td>{{ claim.policyId }}</td>
+            <td>{{ claim.policyNumber }}</td>
+            <td>{{ claim.productType }}</td>
+            <td>
+              ₹{{ claim.claimAmount }}
+            </td>
+            <td>
+              ₹{{ claim.approvedAmount }}
+            </td>
+            <td>
+              <button class="btn btn-success btn-sm" (click)="openSettlementModal(claim)" data-bs-toggle="modal" data-bs-target="#settlementModal">
+                Settle
+              </button>
+            </td>
+
+          </tr>
+
+        </tbody>
+
+      </table>
+
+    </div>
+
+  </div>
+
+</div>
+
+
+<div  class="modal fade" id="settlementModal" tabindex="-1">
+
+  <div class="modal-dialog">
+
+    <div class="modal-content">
+
+      <div
+        class="modal-header bg-success text-white">
+
+        <h5>
+          Claim Settlement
+        </h5>
+
+      </div>
+
+      <div class="modal-body">
+
+        <p>
+          <strong>Claim ID:</strong>
+          {{ selectedClaim?.claimId }}
+        </p>
+
+        <p>
+          <strong>Policy Number:</strong>
+          {{ selectedClaim?.policyNumber }}
+        </p>
+
+        <p>
+          <strong>Approved Amount:</strong>
+          ₹{{ selectedClaim?.approvedAmount }}
+        </p>
+
+        <div class="mb-3">
+
+          <label>
+            Payment Mode
+          </label>
+
+          <input class="form-control" value="Cash" readonly>
+
+        </div>
+
+        <div class="mb-3">
+
+          <label>
+            Payment Reference
+          </label>
+
+          <input
+            class="form-control"
+            [(ngModel)]="paymentReference">
+
+        </div>
+
+      </div>
+
+      <div class="modal-footer">
+
+        <button class="btn btn-success" (click)="settleClaim()" data-bs-dismiss="modal">
+          Settle Claim
+        </button>
+
+      </div>
+
+    </div>
+
+  </div>
+
+</div>

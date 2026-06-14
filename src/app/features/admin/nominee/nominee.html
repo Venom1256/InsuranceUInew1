@@ -1,0 +1,116 @@
+<div class="admin-container">
+  <h2>Nominee Management (Admin)</h2>
+
+  <!-- Statistics -->
+  <div class="stats-grid">
+    <div class="stat-card">
+      <h4>TOTAL NOMINEES</h4>
+      <p class="stat-value">{{ totalNominees }}</p>
+    </div>
+    <div class="stat-card">
+      <h4>TOTAL CUSTOMERS</h4>
+      <p class="stat-value">{{ totalCustomers }}</p>
+    </div>
+  </div>
+
+  <!-- Toolbar with Filters -->
+  <div class="toolbar">
+    <!-- Name Search -->
+    <div class="search-box">
+      <input 
+        [(ngModel)]="searchText" 
+        (input)="applyFilters()" 
+        placeholder="Search by name..." 
+      />
+      <button class="btn-search" (click)="applyFilters()">🔍</button>
+    </div>
+
+    <!-- Customer Filter -->
+    <div class="filter-field">
+      <label>Customer</label>
+      <select [(ngModel)]="selectedCustomerId" (change)="applyFilters()">
+        <option value="">All Customers</option>
+        <option *ngFor="let customer of uniqueCustomers" [value]="customer.customerId">
+          {{ customer.customerId }} - {{ customer.name }}
+        </option>
+      </select>
+    </div>
+
+    <!-- Relationship Filter -->
+    <div class="filter-field">
+      <label>Relationship</label>
+      <select [(ngModel)]="selectedRelationship" (change)="applyFilters()">
+        <option value="">All</option>
+        <option *ngFor="let rel of relationships" [value]="rel">{{ rel }}</option>
+      </select>
+    </div>
+
+    <!-- Reset -->
+    <button class="btn-reset" (click)="resetFilters()">Reset</button>
+  </div>
+
+  <!-- Table -->
+  <div class="table-card" *ngIf="!loading">
+    <div class="table-header">
+      <span>Showing {{ paginatedNominees.length }} of {{ totalItems }} nominees</span>
+      <div class="page-size">
+        <label>Page Size:</label>
+        <select (change)="onPageSizeChange(+$any($event.target).value)">
+          <option [value]="5">5</option>
+          <option [value]="10" selected>10</option>
+          <option [value]="20">20</option>
+          <option [value]="50">50</option>
+        </select>
+      </div>
+    </div>
+
+    <table class="data-table">
+      <thead>
+        <tr>
+          <th (click)="sort('nomineeId')">ID {{ getSortIcon('nomineeId') }}</th>
+          <th (click)="sort('customerId')">CUSTOMER ID {{ getSortIcon('customerId') }}</th>
+          <th (click)="sort('name')">NAME {{ getSortIcon('name') }}</th>
+          <th (click)="sort('relationship')">RELATIONSHIP {{ getSortIcon('relationship') }}</th>
+          <th (click)="sort('sharePercentage')">SHARE % {{ getSortIcon('sharePercentage') }}</th>
+          <th>ACTIONS</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr *ngFor="let nominee of paginatedNominees">
+          <td>{{ nominee.nomineeId }}</td>
+          <td>{{ nominee.customerId }}</td>
+          <td>{{ nominee.name }}</td>
+          <td>
+            <span class="badge" [class]="'rel-' + nominee.relationship.toLowerCase()">{{ nominee.relationship }}</span>
+          </td>
+          <td>
+            <div class="share-bar">
+              <div class="share-fill" [style.width.%]="nominee.sharePercentage"></div>
+              <span>{{ nominee.sharePercentage }}%</span>
+            </div>
+          </td>
+          <td class="actions">
+            <!-- View Only - No Delete -->
+            <button class="btn-view" (click)="viewNominee(nominee)" title="View">👁 View</button>
+          </td>
+        </tr>
+        <tr *ngIf="paginatedNominees.length === 0">
+          <td colspan="6" class="no-data">No nominees found.</td>
+        </tr>
+      </tbody>
+    </table>
+
+    <!-- Pagination -->
+    <div class="pagination" *ngIf="totalPages > 1">
+      <button [disabled]="currentPage === 1" (click)="goToPage(currentPage - 1)">Previous</button>
+      <button *ngFor="let page of pages" [class.active]="page === currentPage" (click)="goToPage(page)">{{ page }}</button>
+      <button [disabled]="currentPage === totalPages" (click)="goToPage(currentPage + 1)">Next</button>
+    </div>
+  </div>
+
+  <div class="loading" *ngIf="loading">
+    <p>Loading nominees...</p>
+  </div>
+
+  <div *ngIf="message" class="alert" [class.error]="isError">{{ message }}</div>
+</div>

@@ -1,0 +1,118 @@
+<div class="container-fluid mt-4">
+
+    <div class="card shadow">
+
+        <div class="card-header bg-primary text-white">
+
+            <h3 class="mb-0">
+
+                Claim Investigation
+
+            </h3>
+
+        </div>
+
+        <div class="card-body">
+
+            <div class="table-responsive">
+
+                <table
+                    class="table table-bordered table-hover align-middle">
+
+                    <thead class="table-dark">
+
+                        <tr>
+
+                            <th>Claim ID</th>
+                            <th>Policy Number</th>
+                            <th>Product Type</th>
+                            <th>Claim Amount</th>
+                            <th>Status</th>
+                            <th>Findings</th>
+                            <th>Remark</th>
+                            <th>Recommendation</th>
+                            <th>Action</th>
+
+                        </tr>
+
+                    </thead>
+
+                    <tbody>
+
+                        <tr
+                            *ngFor="let claim of claims">
+
+                            <td>
+                                {{ claim.claimId }}
+                            </td>
+
+                            <td>
+                                {{ claim.policyNumber }}
+                            </td>
+
+                            <td>
+                                {{ claim.productType }}
+                            </td>
+
+                            <td>
+                                ₹{{ claim.claimAmount }}
+                            </td>
+
+                            <td>
+                                <span class="badge bg-info">
+                                    {{ claim.status }}
+                                </span>
+                            </td>
+
+                            <td>
+                                <input type="text" class="form-control" placeholder="Enter findings" [(ngModel)]="investigationData[claim.claimId].findings">
+                            </td>
+
+                            <td>
+                                <input type="text" class="form-control" placeholder="Enter remark" [(ngModel)]="investigationData[claim.claimId].remark">
+                            </td>
+
+                            <td>
+                                <select
+                                    class="form-select"
+                                    [(ngModel)]="investigationData[claim.claimId].recommendation">
+                                    <option value="Approve">
+                                        Approve
+                                    </option>
+
+                                    <option value="Reject">
+                                        Reject
+                                    </option>
+                                </select>
+                            </td>
+
+                            <td>
+                                <button
+                                    class="btn btn-primary btn-sm"
+                                    (click)="investigateClaim(claim.claimId)">
+                                    Investigate
+                                </button>
+                            </td>
+
+                        </tr>
+
+                        <tr
+                            *ngIf="claims.length === 0">
+                            <td
+                                colspan="9"
+                                class="text-center text-muted">
+                                No Claims Available For Investigation
+                            </td>
+                        </tr>
+                        
+                    </tbody>
+
+                </table>
+
+            </div>
+
+        </div>
+
+    </div>
+
+</div>

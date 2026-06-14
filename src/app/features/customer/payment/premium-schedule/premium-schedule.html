@@ -1,0 +1,134 @@
+<div class="container-fluid">
+
+    <div class="row mb-4">
+        <div class="col-md-12">
+            <h2>My Premium Schedule</h2>
+        </div>
+    </div>
+
+    <div class="card mb-4">
+        <div class="card-body">
+
+            <div class="form-group">
+                <label class="mb-2">
+                    Choose Policy
+                </label>
+
+                <select
+                    class="form-control"
+                    [(ngModel)]="selectedPolicyId"
+                    (change)="onPolicyChange()">
+
+                    <option
+                        *ngFor="let policy of policies"
+                        [value]="policy.policyId">
+
+                        {{ policy.productName }}
+                        -
+                        {{ policy.policyNumber }}
+
+                    </option>
+
+                </select>
+            </div>
+
+        </div>
+    </div>
+
+    <div class="card">
+
+        <div class="card-header">
+            <h5 class="mb-0">
+                Premium Schedule
+            </h5>
+        </div>
+
+        <div class="card-body">
+
+            <div class="table-responsive">
+
+                <table
+                    class="table table-bordered table-striped">
+
+                    <thead>
+                        <tr>
+                            <th>Premium Id</th>
+                            <th>Policy Number</th>
+                            <th>Installment No</th>
+                            <th>Due Date</th>
+                            <th>Premium Amount</th>
+                            <th>Paid Amount</th>
+                            <th>Payment Date</th>
+                            <th>Late Fee</th>
+                            <th>Status</th>
+                        </tr>
+                    </thead>
+
+                    <tbody>
+
+                        <tr *ngFor="let item of schedules">
+
+                            <td>{{ item.premiumId }}</td>
+
+                            <td>{{ item.policyNumber }}</td>
+
+                            <td>{{ item.installmentNumber }}</td>
+
+                            <td>
+                                {{ item.dueDate | date:'dd-MMM-yyyy' }}
+                            </td>
+
+                            <td>
+                                ₹{{ item.premiumAmount }}
+                            </td>
+
+                            <td>
+                                ₹{{ item.paidAmount }}
+                            </td>
+
+                            <td>
+                                {{ item.paymentDate | date:'dd-MMM-yyyy' }}
+                            </td>
+
+                            <td>
+                                ₹{{ item.lateFee }}
+                            </td>
+
+                            <td>
+
+                                <span
+                                    class="badge"
+                                    [ngClass]="{
+                                        'bg-success': item.isPaid,
+                                        'bg-warning': !item.isPaid
+                                    }">
+
+                                    {{ item.status }}
+
+                                </span>
+
+                            </td>
+
+                        </tr>
+
+                        <tr *ngIf="schedules.length === 0">
+                            <td
+                                colspan="9"
+                                class="text-center">
+
+                                No Premium Schedule Found
+
+                            </td>
+                        </tr>
+
+                    </tbody>
+
+                </table>
+
+            </div>
+
+        </div>
+
+    </div>
+
+</div>

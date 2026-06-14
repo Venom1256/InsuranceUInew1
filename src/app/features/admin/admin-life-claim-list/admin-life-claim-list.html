@@ -1,0 +1,136 @@
+<div class="container-fluid mt-4">
+
+    <div class="card shadow">
+
+        <div class="card-header bg-primary text-white">
+
+            <h3>Life Claims</h3>
+
+        </div>
+
+        <div class="card-body">
+
+            <table class="table table-bordered table-hover">
+
+                <thead class="table-dark">
+
+                    <tr>
+
+                        <th>Claim Id</th>
+                        <th>Policy Number</th>
+                        <th>Product Type</th>
+                        <th>Claim Amount</th>
+                        <th>Claim Date</th>
+                        <th>Raised By</th>
+                        <th>Status</th>
+                        <th>Action</th>
+
+                    </tr>
+
+                </thead>
+
+                <tbody>
+
+                    <tr *ngFor="let claim of claims">
+
+                        <td>{{ claim.claimId }}</td>
+
+                        <td>{{ claim.policyNumber }}</td>
+
+                        <td>{{ claim.productType }}</td>
+
+                        <td>₹{{ claim.claimAmount }}</td>
+
+                        <td>
+                            {{ claim.claimDate | date:'dd-MM-yyyy' }}
+                        </td>
+
+                        <td>{{ claim.raisedByType }}</td>
+
+                        <td>
+
+                            <span
+                                class="badge bg-warning"
+                                *ngIf="claim.status === 'Raised'">
+
+                                Raised
+
+                            </span>
+
+                            <span
+                                class="badge bg-info"
+                                *ngIf="claim.status === 'DocumentApproved'">
+
+                                Document Approved
+
+                            </span>
+
+                            <span
+                                class="badge bg-primary"
+                                *ngIf="claim.status === 'Under Investigation'">
+
+                                Under Investigation
+
+                            </span>
+
+                            <span
+                                class="badge bg-success"
+                                *ngIf="claim.status === 'Approved'">
+
+                                Approved
+
+                            </span>
+
+                            <span
+                                class="badge bg-danger"
+                                *ngIf="claim.status === 'Rejected'">
+
+                                Rejected
+
+                            </span>
+
+                            <span
+                                class="badge bg-dark"
+                                *ngIf="claim.status === 'Settled'">
+
+                                Settled
+
+                            </span>
+
+                        </td>
+
+                        <td>
+
+                            <button
+                                class="btn btn-primary btn-sm"
+                                [routerLink]="['/admin/life-claim-details', claim.claimId]">
+
+                                View
+
+                            </button>
+
+                        </td>
+
+                    </tr>
+
+                    <tr *ngIf="claims.length === 0">
+
+                        <td
+                            colspan="8"
+                            class="text-center text-muted">
+
+                            No Life Claims Found
+
+                        </td>
+
+                    </tr>
+
+                </tbody>
+
+            </table>
+
+        </div>
+
+    </div>
+
+</div>

@@ -1,0 +1,300 @@
+<div class="container-fluid mt-4">
+
+    <div class="card shadow">
+
+        <div class="card-header bg-primary text-white">
+
+            <h3 class="mb-0">
+
+                Upload Life Claim Documents
+
+            </h3>
+
+        </div>
+
+        <div class="card-body">
+
+            <div class="mb-3">
+
+                <label class="form-label fw-bold">
+
+                    Select Life Claim
+
+                </label>
+
+                <select
+                    class="form-select"
+                    [(ngModel)]="selectedClaimId"
+                    (change)="onClaimChange()">
+
+                    <option [value]="0">
+
+                        Select Claim
+
+                    </option>
+
+                    <option
+                        *ngFor="let claim of claims"
+                        [value]="claim.claimId">
+
+                        Claim #{{ claim.claimId }}
+                        - {{ claim.policyNumber }}
+
+                    </option>
+
+                </select>
+
+            </div>
+
+            <div
+                class="card border-info mb-3"
+                *ngIf="selectedClaim">
+
+                <div class="card-header bg-info text-white">
+
+                    Claim Details
+
+                </div>
+
+                <div class="card-body">
+
+                    <div class="row">
+
+                        <div class="col-md-3">
+
+                            <strong>Claim ID</strong>
+
+                            <br>
+
+                            {{ selectedClaim.claimId }}
+
+                        </div>
+
+                        <div class="col-md-3">
+
+                            <strong>Policy Number</strong>
+
+                            <br>
+
+                            {{ selectedClaim.policyNumber }}
+
+                        </div>
+
+                        <div class="col-md-3">
+
+                            <strong>Claim Amount</strong>
+
+                            <br>
+
+                            ₹{{ selectedClaim.claimAmount }}
+
+                        </div>
+
+                        <div class="col-md-3">
+
+                            <strong>Status</strong>
+
+                            <br>
+
+                            {{ selectedClaim.status }}
+
+                        </div>
+
+                    </div>
+
+                    <hr>
+
+                    <strong>Claim Reason :</strong>
+
+                    {{ selectedClaim.claimReason }}
+
+                </div>
+
+            </div>
+
+            <div class="mb-3">
+
+                <label class="form-label fw-bold">
+
+                    Select Document Type
+
+                </label>
+
+                <select
+                    class="form-select"
+                    [(ngModel)]="documentType">
+
+                    <option value="">
+
+                        Select Document
+
+                    </option>
+
+                    <option
+                        *ngFor="let doc of availableDocuments"
+                        [value]="doc">
+
+                        {{ doc }}
+
+                    </option>
+
+                </select>
+
+            </div>
+
+            <div class="mb-3">
+
+                <label class="form-label fw-bold">
+
+                    Choose File
+
+                </label>
+
+                <input
+                    type="file"
+                    class="form-control"
+                    (change)="onFileSelected($event)">
+
+            </div>
+
+            <button
+                class="btn btn-primary w-100"
+                (click)="uploadDocument()">
+
+                Upload Document
+
+            </button>
+
+            <hr>
+
+            <div class="d-flex justify-content-between align-items-center mb-3">
+
+                <h4 class="mb-0">
+
+                    Uploaded Documents
+
+                </h4>
+
+                <span class="badge bg-primary fs-6">
+
+                    {{ documents.length }}
+
+                </span>
+
+            </div>
+
+            <div class="table-responsive">
+
+                <table class="table table-bordered table-hover">
+
+                    <thead class="table-dark">
+
+                        <tr>
+
+                            <th>Document Type</th>
+                            <th>File Name</th>
+                            <th>Uploaded Date</th>
+                            <th>Status</th>
+                            <th>Remark</th>
+                            <th>View</th>
+                            <th>Download</th>
+
+                        </tr>
+
+                    </thead>
+
+                    <tbody>
+
+                        <tr *ngFor="let doc of documents">
+
+                            <td>{{ doc.documentType }}</td>
+
+                            <td>{{ doc.fileName }}</td>
+
+                            <td>
+                                {{ doc.uploadedDate | date:'dd-MM-yyyy' }}
+                            </td>
+
+                            <td>
+
+                                <span
+                                    *ngIf="doc.status === 'Pending'"
+                                    class="badge bg-warning text-dark">
+
+                                    Pending
+
+                                </span>
+
+                                <span
+                                    *ngIf="doc.status === 'Approved'"
+                                    class="badge bg-success">
+
+                                    Approved
+
+                                </span>
+
+                                <span
+                                    *ngIf="doc.status === 'Rejected'"
+                                    class="badge bg-danger">
+
+                                    Rejected
+
+                                </span>
+
+                            </td>
+
+                            <td>
+
+                                {{ doc.remark || '-' }}
+
+                            </td>
+
+                            <td>
+
+                                <button
+                                    class="btn btn-info btn-sm"
+                                    (click)="viewDocument(doc.documentId)">
+
+                                    View
+
+                                </button>
+
+                            </td>
+
+                            <td>
+
+                                <button
+                                    class="btn btn-success btn-sm"
+                                    (click)="downloadDocument(doc.documentId)">
+
+                                    Download
+
+                                </button>
+
+                            </td>
+
+                        </tr>
+
+                        <tr *ngIf="documents.length === 0">
+
+                            <td
+                                colspan="7"
+                                class="text-center">
+
+                                No Documents Uploaded
+
+                            </td>
+
+                        </tr>
+
+                    </tbody>
+
+                </table>
+
+            </div>
+
+        </div>
+
+    </div>
+
+</div>

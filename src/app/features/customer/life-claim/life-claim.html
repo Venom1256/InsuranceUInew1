@@ -1,0 +1,125 @@
+<div class="card shadow mt-4">
+
+    <div class="card-header bg-success text-white">
+
+        <h4>Raise Life Claim</h4>
+
+    </div>
+
+    <div class="card-body">
+
+        <div class="mb-3">
+
+            <label>Policy</label>
+
+            <select
+                class="form-select"
+                [(ngModel)]="claim.policyId"
+                (change)="onPolicyChange()">
+
+                <option [value]="0">
+
+                    Select Policy
+
+                </option>
+
+                <option
+                    *ngFor="let p of policies"
+                    [value]="p.policyId">
+
+                    {{ p.policyNumber }}
+
+                </option>
+
+            </select>
+
+        </div>
+
+        <div
+            *ngIf="selectedPolicy"
+            class="card border-primary mb-3">
+
+            <div class="card-header">
+
+                <strong>Policy Details</strong>
+
+            </div>
+
+            <div class="card-body">
+
+                <div class="row">
+
+                    <div class="col-md-6">
+
+                        <p>
+                            <strong>Policy Number:</strong>
+                            {{ selectedPolicy.policyNumber }}
+                        </p>
+
+                        <p>
+                            <strong>Coverage Amount:</strong>
+                            ₹{{ selectedPolicy.coverageAmount }}
+                        </p>
+
+                        <p>
+                            <strong>Premium Amount:</strong>
+                            ₹{{ selectedPolicy.premiumAmount }}
+                        </p>
+
+                    </div>
+
+                    <div class="col-md-6">
+
+                        <p>
+                            <strong>Product:</strong>
+                            {{ selectedPolicy.productName }}
+                        </p>
+
+                        <p>
+                            <strong>Status:</strong>
+                            {{ selectedPolicy.status }}
+                        </p>
+
+                    </div>
+
+                </div>
+
+            </div>
+
+        </div>
+
+        <div class="mb-3">
+
+            <label>Claim Amount</label>
+
+            <input
+                type="number"
+                class="form-control"
+                [(ngModel)]="claim.claimAmount"
+                readonly>
+
+        </div>
+
+        <div class="mb-3">
+
+            <label>Claim Reason</label>
+
+            <textarea
+                class="form-control"
+                rows="4"
+                [(ngModel)]="claim.claimReason">
+            </textarea>
+
+        </div>
+
+        <button
+            class="btn btn-primary"
+            (click)="raiseClaim()">
+
+            Raise Claim
+
+        </button>
+
+    </div>
+
+</div>

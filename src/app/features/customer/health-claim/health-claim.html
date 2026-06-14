@@ -1,0 +1,174 @@
+<div class="card shadow mt-4">
+
+    <div class="card-header bg-success text-white">
+
+        <h4>
+            Raise Health Claim
+        </h4>
+
+    </div>
+
+    <div class="card-body">
+
+       
+
+        <div class="mb-3">
+
+            <label class="form-label">
+                Policy
+            </label>
+
+            <select
+                class="form-select"
+                [(ngModel)]="claim.policyId"
+                (change)="onPolicyChange()">
+
+                <option [value]="0">
+                    Select Policy
+                </option>
+
+                <option
+                    *ngFor="let p of policies"
+                    [value]="p.policyId">
+                    {{ p.policyNumber }}
+                </option>
+
+            </select>
+
+        </div>
+
+        <div
+            *ngIf="selectedPolicy"
+            class="card border-primary mb-3">
+
+            <div class="card-header bg-light">
+
+                <strong>
+                    Policy Details
+                </strong>
+
+            </div>
+
+            <div class="card-body">
+
+                <div class="row">
+
+                    <div class="col-md-6 mb-2">
+
+                        <strong>
+                            Policy Number:
+                        </strong>
+                       
+                        {{ selectedPolicy.policyNumber }}
+                    </div>
+
+                    <div class="col-md-6 mb-2">
+
+                        <strong>
+                            Product:
+                        </strong>
+
+                        {{ selectedPolicy.productName }}
+
+                    </div>
+
+                    <div class="col-md-6 mb-2">
+
+                        <strong>
+                            Coverage Amount:
+                        </strong>
+
+                        ₹{{ selectedPolicy.coverageAmount }}
+
+                    </div>
+
+                    <div class="col-md-6 mb-2">
+
+                        <strong>
+
+                            Remaining Amount:
+
+                        </strong>
+
+                        ₹{{ selectedPolicy.remainingCoverageAmount }}
+
+                    </div>
+
+                    <div class="col-md-6 mb-2">
+
+                        <strong>
+
+                            Premium Amount:
+
+                        </strong>
+
+                        ₹{{ selectedPolicy.premiumAmount }}
+
+                    </div>
+
+                    <div class="col-md-6 mb-2">
+
+                        <strong>
+
+                            Status:
+
+                        </strong>
+
+                        {{ selectedPolicy.status }}
+
+                    </div>
+
+                </div>
+
+            </div>
+
+        </div>
+
+  
+
+        <div class="mb-3">
+
+            <label class="form-label">
+
+                Claim Amount
+
+            </label>
+
+            <input
+                type="number"
+                class="form-control"
+                [(ngModel)]="claim.claimAmount">
+
+        </div>
+
+       
+
+        <div class="mb-3">
+
+            <label class="form-label">
+
+                Claim Reason
+
+            </label>
+
+            <textarea
+                class="form-control"
+                rows="4"
+                [(ngModel)]="claim.claimReason">
+            </textarea>
+
+        </div>
+
+        <!-- Submit -->
+
+        <button
+            class="btn btn-primary"
+            (click)="raiseClaim()">
+
+            Raise Claim
+
+        </button>
+
+    </div>
+
+</div>

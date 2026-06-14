@@ -1,0 +1,125 @@
+<div class="admin-container">
+  <h2>Customer Management (Admin)</h2>
+
+  <!-- Statistics -->
+  <div class="stats-grid">
+    <div class="stat-card">
+      <h4>TOTAL CUSTOMERS</h4>
+      <p class="stat-value">{{ totalCustomers }}</p>
+    </div>
+    <div class="stat-card active">
+      <h4>ACTIVE</h4>
+      <p class="stat-value">{{ activeCustomers }}</p>
+    </div>
+    <div class="stat-card inactive">
+      <h4>INACTIVE</h4>
+      <p class="stat-value">{{ inactiveCustomers }}</p>
+    </div>
+  </div>
+
+  <!-- Toolbar -->
+  <div class="toolbar">
+    <div class="search-box">
+      <input 
+        [(ngModel)]="searchText" 
+        (input)="applyFilters()" 
+        placeholder="Search by name, email, code..." 
+      />
+      <button class="btn-search" (click)="applyFilters()">🔍</button>
+    </div>
+    
+    <div class="filter-field">
+      <label>Status</label>
+      <select [(ngModel)]="statusFilter" (change)="applyFilters()">
+        <option value="all">All</option>
+        <option value="active">Active</option>
+        <option value="inactive">Inactive</option>
+      </select>
+    </div>
+
+    <button class="btn-reset" (click)="resetFilters()">Reset</button>
+  </div>
+
+  <!-- Table -->
+  <div class="table-card" *ngIf="!loading">
+    <div class="table-header">
+      <span>Showing {{ paginatedCustomers.length }} of {{ filteredCustomers.length }} customers</span>
+      <div class="page-size">
+        <label>Page Size:</label>
+        <select (change)="onPageSizeChange(+$any($event.target).value)">
+          <option [value]="5">5</option>
+          <option [value]="10" selected>10</option>
+          <option [value]="20">20</option>
+          <option [value]="50">50</option>
+        </select>
+      </div>
+    </div>
+
+    <table class="data-table">
+      <thead>
+        <tr>
+          <th (click)="sort('customerId')">ID {{ getSortIcon('customerId') }}</th>
+          <th (click)="sort('customerCode')">CODE {{ getSortIcon('customerCode') }}</th>
+          <th (click)="sort('firstName')">NAME {{ getSortIcon('firstName') }}</th>
+          <th (click)="sort('email')">EMAIL {{ getSortIcon('email') }}</th>
+          <th (click)="sort('mobileNumber')">MOBILE {{ getSortIcon('mobileNumber') }}</th>
+          <th (click)="sort('kycStatus')">KYC {{ getSortIcon('kycStatus') }}</th>
+          <th (click)="sort('isActive')">STATUS {{ getSortIcon('isActive') }}</th>
+          <th>ACTIONS</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr *ngFor="let customer of paginatedCustomers" [class.inactive-row]="!customer.isActive">
+          <td>{{ customer.customerId }}</td>
+          <td><code>{{ customer.customerCode }}</code></td>
+          <td>{{ customer.firstName }} {{ customer.lastName }}</td>
+          <td>{{ customer.email }}</td>
+          <td>{{ customer.mobileNumber }}</td>
+          <td>
+            <span class="badge" [class]="getKycBadgeClass(customer.kycStatus)">
+              {{ customer.kycStatus }}
+            </span>
+          </td>
+          <td>
+            <span class="badge" [class]="getStatusBadgeClass(customer.isActive)">
+              {{ customer.isActive ? 'Active' : 'Inactive' }}
+            </span>
+          </td>
+          <td class="actions">
+            <button class="btn-view" (click)="viewCustomer(customer)" title="View">👁</button>
+            <button 
+              class="btn-delete" 
+              (click)="onSoftDelete(customer.customerId)" 
+              title="Soft Delete"
+              [disabled]="!customer.isActive"
+            >
+              🗑
+            </button>
+          </td>
+        </tr>
+        <tr *ngIf="paginatedCustomers.length === 0">
+          <td colspan="8" class="no-data">No customers found.</td>
+        </tr>
+      </tbody>
+    </table>
+
+    <!-- Pagination -->
+    <div class="pagination" *ngIf="totalPages > 1">
+      <button [disabled]="currentPage === 1" (click)="goToPage(currentPage - 1)">Previous</button>
+      <button 
+        *ngFor="let page of pages" 
+        [class.active]="page === currentPage" 
+        (click)="goToPage(page)"
+      >
+        {{ page }}
+      </button>
+      <button [disabled]="currentPage === totalPages" (click)="goToPage(currentPage + 1)">Next</button>
+    </div>
+  </div>
+
+  <div class="loading" *ngIf="loading">
+    <p>Loading customers...</p>
+  </div>
+
+  <div *ngIf="message" class="alert" [class.error]="isError">{{ message }}</div>
+</div>

@@ -1,0 +1,121 @@
+<div class="container-fluid mt-4">
+
+    <div class="card shadow">
+
+        <div class="card-header bg-primary text-white">
+
+            <h3>Life Claim Verification</h3>
+
+        </div>
+
+        <div class="card-body">
+
+            <div class="row mb-3">
+
+                <div class="col-md-3">
+                    <strong>Claim Id:</strong>
+                    {{ claim.claimId }}
+                </div>
+
+                <div class="col-md-3">
+                    <strong>Policy Number:</strong>
+                    {{ claim.policyNumber }}
+                </div>
+
+                <div class="col-md-3">
+                    <strong>Status:</strong>
+                    {{ claim.status }}
+                </div>
+
+                <div class="col-md-3">
+                    <strong>Claim Amount:</strong>
+                    {{ claim.claimAmount }}
+                </div>
+
+            </div>
+
+            <table class="table table-bordered table-hover">
+
+                <thead class="table-dark">
+
+                    <tr>
+
+                        <th>Document Type</th>
+                        <th>View</th>
+                        <th>Status</th>
+                        <th>Remark</th>
+                        <th>Approve</th>
+                        <th>Reject</th>
+
+                    </tr>
+
+                </thead>
+
+                <tbody>
+
+                    <tr *ngFor="let doc of documents">
+
+                        <td>{{ doc.documentType }}</td>
+
+                        <td>
+
+                            <button
+                                class="btn btn-info btn-sm"
+                                (click)="viewDocument(doc.documentId)">
+                                View
+                            </button>
+
+                        </td>
+
+                        <td>{{ doc.status }}</td>
+
+                        <td>
+
+                            <input
+                                type="text"
+                                class="form-control"
+                                [(ngModel)]="remarks[doc.documentId]">
+
+                        </td>
+
+                        <td>
+
+                            <button
+                                class="btn btn-success btn-sm"
+                                [disabled]="doc.status === 'Approved'"
+                                (click)="approveDocument(doc.documentId)">
+                                Approve
+                            </button>
+
+                        </td>
+
+                        <td>
+
+                            <button
+                                class="btn btn-danger btn-sm"
+                                [disabled]="doc.status === 'Rejected'"
+                                (click)="rejectDocument(doc.documentId)">
+                                Reject
+                            </button>
+
+                        </td>
+
+                    </tr>
+
+                    <tr *ngIf="documents.length === 0">
+
+                        <td colspan="6" class="text-center">
+                            No Documents Found
+                        </td>
+
+                    </tr>
+
+                </tbody>
+
+            </table>
+
+        </div>
+
+    </div>
+
+</div>

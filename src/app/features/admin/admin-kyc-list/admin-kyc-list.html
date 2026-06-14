@@ -1,0 +1,98 @@
+<div class="container-fluid mt-4">
+
+    <div class="card shadow">
+
+        <div class="card-header bg-primary text-white">
+
+            <h3> Pending KYC Customers </h3>
+
+        </div>
+
+        <div class="card-body">
+
+            <table class="table table-bordered table-striped table-hover">
+
+                <thead class="table-dark">
+
+                    <tr>
+
+                        <th>Customer Id</th>
+                        <th>First Name</th>
+                        <th>Last Name</th>
+                        <th>Email</th>
+                        <th>KYC Status</th>
+                        <th>Action</th>
+
+                    </tr>
+
+                </thead>
+
+                <tbody>
+
+                    <tr *ngFor="let customer of customers">
+
+                        <td>
+                            {{ customer.customerId }}
+                        </td>
+
+                        <td>
+                            {{ customer.firstName }}
+                        </td>
+
+                        <td>
+                            {{ customer.lastName }}
+                        </td>
+
+                        <td>
+                            {{ customer.email }}
+                        </td>
+
+                        <td>
+                            <span
+                                class="badge bg-warning text-dark"
+                                *ngIf="customer.kycStatus === 'Pending'">
+                                Pending
+                            </span>
+
+                            <span
+                                class="badge bg-success"
+                                *ngIf="customer.kycStatus === 'Approved'">
+                                Approved
+                            </span>
+
+                            <span
+                                class="badge bg-danger"
+                                *ngIf="customer.kycStatus === 'Rejected'">
+                                Rejected
+                            </span>
+                        </td>
+
+                        <td>
+                            <button
+                                class="btn btn-primary btn-sm"
+                                (click)="viewCustomer(customer.customerId)">
+                                View
+                            </button>
+                        </td>
+
+                    </tr>
+
+                    <tr *ngIf="customers.length === 0">
+
+                        <td
+                            colspan="6"
+                            class="text-center text-muted">
+                            No Pending KYC Found
+                        </td>
+
+                    </tr>
+
+                </tbody>
+
+            </table>
+
+        </div>
+
+    </div>
+
+</div>
