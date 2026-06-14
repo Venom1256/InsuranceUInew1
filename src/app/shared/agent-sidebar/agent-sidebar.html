@@ -1,0 +1,40 @@
+<div class="sidebar">
+  <div class="sidebar-brand">
+    <i class="bi bi-briefcase-fill"></i>
+    <span>Agent Portal</span>
+  </div>
+
+  <nav class="sidebar-nav">
+    <ul class="nav-list">
+      <li *ngFor="let item of menuItems" class="nav-item">
+
+        <a *ngIf="!item.children" class="nav-link" [routerLink]="item.route" routerLinkActive="active">
+          <i class="bi" [class]="item.icon"></i>
+          <span>{{ item.name }}</span>
+        </a>
+
+        <div *ngIf="item.children" class="nav-group">
+          <a class="nav-link has-submenu" (click)="toggleMenu(item.name)" [class.expanded]="isExpanded(item.name)">
+            <i class="bi" [class]="item.icon"></i>
+            <span>{{ item.name }}</span>
+            <i class="bi bi-chevron-right submenu-icon" [class.rotate]="isExpanded(item.name)"></i>
+          </a>
+
+          <ul class="submenu" [class.show]="isExpanded(item.name)">
+            <li *ngFor="let child of item.children">
+              <a class="nav-link sub-link" [routerLink]="child.route" routerLinkActive="active">
+                <i class="bi" [class]="child.icon"></i>
+                <span>{{ child.name }}</span>
+              </a>
+            </li>
+          </ul>
+        </div>
+
+      </li>
+    </ul>
+  </nav>
+
+  <div class="sidebar-footer">
+    <span>v1.0.0</span>
+  </div>
+</div>

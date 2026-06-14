@@ -1,0 +1,90 @@
+<div class="container">
+  <h2>My Nominees</h2>
+
+  <!-- Loading -->
+  <div class="loading" *ngIf="loading">
+    <p>Loading nominees...</p>
+  </div>
+
+  <!-- Nominee List -->
+  <div class="card" *ngIf="nominees.length > 0 && !loading">
+    <h3>Nominee List ({{ nominees.length }}/{{ maxNominees }})</h3>
+    
+    <div class="percentage-bar">
+      <div class="percentage-fill" [style.width.%]="totalPercentage"></div>
+      <span>Total: {{ totalPercentage }}%</span>
+    </div>
+
+    <table class="nominee-table">
+      <thead>
+        <tr>
+          <th>#</th>
+          <th>Name</th>
+          <th>Relationship</th>
+          <th>Share %</th>
+          <th>Actions</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr *ngFor="let nominee of nominees; let i = index">
+          <td>{{ i + 1 }}</td>
+          <td>{{ nominee.name }}</td>
+          <td>{{ nominee.relationship }}</td>
+          <td>{{ nominee.sharePercentage }}%</td>
+          <td class="actions">
+            <button class="btn-edit" (click)="onEdit(nominee)">Edit</button>
+            <button class="btn-delete" (click)="onDelete(nominee.nomineeId)">Delete</button>
+          </td>
+        </tr>
+      </tbody>
+    </table>
+  </div>
+
+  <!-- Empty State -->
+  <div class="card empty" *ngIf="nominees.length === 0 && !loading">
+    <p>No nominees added yet. Add up to {{ maxNominees }} nominees.</p>
+  </div>
+
+  <!-- Add / Edit Form -->
+  <div class="card" *ngIf="canAddMore || isEditing">
+    <h3>{{ isEditing ? 'Edit Nominee' : 'Add Nominee' }}</h3>
+    
+    <form [formGroup]="nomineeForm" (ngSubmit)="onSubmit()">
+      <label>Name *</label>
+      <input formControlName="name" placeholder="Nominee full name" maxlength="100" />
+
+      <label>Relationship *</label>
+      <select formControlName="relationship">
+        <option value="">Select Relationship</option>
+        <option value="Spouse">Spouse</option>
+        <option value="Child">Child</option>
+        <option value="Parent">Parent</option>
+        <option value="Sibling">Sibling</option>
+        <option value="Other">Other</option>
+      </select>
+
+      <label>Share Percentage *</label>
+      <input type="number" formControlName="sharePercentage" placeholder="0-100" min="0" max="100" step="0.01" />
+      <small class="hint">Enter 0 for auto-calculation</small>
+
+      <div class="form-actions">
+        <button type="submit" [disabled]="nomineeForm.invalid || loading">
+          {{ loading ? 'Saving...' : (isEditing ? 'Update Nominee' : 'Add Nominee') }}
+        </button>
+        <button type="button" class="btn-secondary" *ngIf="isEditing" (click)="cancelEdit()">
+          Cancel
+        </button>
+      </div>
+    </form>
+  </div>
+
+  <!-- Max Limit Reached -->
+  <div class="card limit" *ngIf="!canAddMore && !isEditing">
+    <p>Maximum {{ maxNominees }} nominees reached. Delete existing to add new.</p>
+  </div>
+
+  <!-- Alert Message -->
+  <div *ngIf="message" class="alert" [class.error]="isError">
+    {{ message }}
+  </div>
+</div>

@@ -1,0 +1,109 @@
+<div class="container mt-4">
+
+  <h3>Premium Payment</h3>
+
+  <div class="alert alert-info" *ngIf="message">
+    {{ message }}
+  </div>
+
+  <div class="card p-3 mb-4">
+    <label class="form-label">Choose Policy</label>
+
+    <select
+      class="form-control"
+      [(ngModel)]="selectedPolicyId"
+      (change)="onPolicyChange()">
+
+      <option [value]="0">
+        -- Select Policy --
+      </option>
+
+      <option
+        *ngFor="let p of policies"
+        [value]="p.policyId">
+
+        {{ p.productName }} - {{ p.policyNumber }}
+
+      </option>
+
+    </select>
+  </div>
+
+  <div
+    class="card p-3 mb-4"
+    *ngFor="let premium of duePremiums">
+
+    <h5>Premium Due Today</h5>
+
+    <p>
+      <b>Premium Id:</b>
+      {{ premium.premiumId }}
+    </p>
+
+    <p>
+      <b>Amount:</b>
+      ₹{{ premium.amount || premium.premiumAmount }}
+    </p>
+
+    <p>
+      <b>Due Date:</b>
+      {{ premium.dueDate | date:'dd-MMM-yyyy' }}
+    </p>
+
+    <p>
+      <b>Status:</b>
+      {{ premium.status || premium.paymentStatus }}
+    </p>
+
+    <button
+      class="btn btn-success"
+      (click)="payNow(premium)"
+      [disabled]="payingPremiumId == premium.premiumId">
+
+      {{ payingPremiumId == premium.premiumId ? 'Processing...' : 'Pay Now' }}
+
+    </button>
+
+  </div>
+
+  <h4>Payment History</h4>
+
+  <table class="table table-bordered table-striped mt-3">
+
+    <thead>
+      <tr>
+        <th>Payment Id</th>
+        <th>Policy Number</th>
+        <th>Premium Id</th>
+        <th>Amount</th>
+        <th>Mode</th>
+        <th>Transaction Id</th>
+        <th>Date</th>
+        <th>Status</th>
+      </tr>
+    </thead>
+
+    <tbody>
+
+      <tr *ngFor="let h of paymentHistory">
+        <td>{{ h.paymentId }}</td>
+        <td>{{ h.policyNumber }}</td>
+        <td>{{ h.premiumId }}</td>
+        <td>₹{{ h.amount }}</td>
+        <td>{{ h.paymentMode }}</td>
+        <td>{{ h.transactionReference }}</td>
+        <td>{{ h.paymentDate | date:'dd-MMM-yyyy' }}</td>
+        <td>{{ h.status }}</td>
+      </tr>
+
+      <tr *ngIf="paymentHistory.length === 0">
+        <td colspan="8" class="text-center">
+          No payment history found for selected policy
+        </td>
+      </tr>
+
+    </tbody>
+
+  </table>
+
+</div>

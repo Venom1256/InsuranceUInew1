@@ -1,0 +1,156 @@
+.container {
+  max-width: 520px;
+  margin: 24px auto;
+  font-family: 'Segoe UI', Arial, sans-serif;
+  padding: 0 12px;
+}
+
+.card {
+  border: 1px solid #ddd;
+  padding: 20px;
+  border-radius: 10px;
+  margin-bottom: 20px;
+  background: #fff;
+  box-shadow: 0 2px 6px rgba(0, 0, 0, 0.06);
+}
+
+h2 {
+  text-align: center;
+  color: #333;
+  margin-bottom: 20px;
+}
+
+h3, h4 {
+  color: #444;
+  margin-top: 0;
+}
+
+.sub-text {
+  color: #666;
+  font-size: 13px;
+  margin-top: -8px;
+  margin-bottom: 16px;
+}
+
+label {
+  display: block;
+  margin-top: 12px;
+  font-size: 13px;
+  font-weight: 600;
+  color: #555;
+}
+
+input, select {
+  width: 100%;
+  padding: 10px;
+  margin-top: 4px;
+  border: 1px solid #ccc;
+  border-radius: 6px;
+  font-size: 14px;
+  box-sizing: border-box;
+}
+
+input:focus, select:focus {
+  outline: none;
+  border-color: #1976d2;
+}
+
+button {
+  margin-top: 16px;
+  padding: 12px 20px;
+  width: 100%;
+  border: none;
+  border-radius: 6px;
+  background: #1976d2;
+  color: #fff;
+  font-size: 15px;
+  cursor: pointer;
+  transition: background 0.2s;
+}
+
+button:hover:not(:disabled) {
+  background: #1565c0;
+}
+
+button:disabled {
+  background: #b0bec5;
+  cursor: not-allowed;
+}
+
+.btn-danger {
+  background: #d32f2f;
+}
+
+.btn-danger:hover:not(:disabled) {
+  background: #c62828;
+}
+
+.btn-secondary {
+  background: #757575;
+}
+
+.btn-secondary:hover:not(:disabled) {
+  background: #616161;
+}
+
+.actions {
+  display: flex;
+  gap: 12px;
+  margin-top: 8px;
+}
+
+.actions button {
+  flex: 1;
+  margin-top: 8px;
+}
+
+hr {
+  margin: 24px 0;
+  border: none;
+  border-top: 1px solid #eee;
+}
+
+.info-grid p {
+  margin: 6px 0;
+  font-size: 14px;
+  color: #444;
+}
+
+.alert {
+  margin-top: 16px;
+  padding: 12px;
+  border-radius: 6px;
+  text-align: center;
+  font-size: 14px;
+  background: #e8f5e9;
+  color: #2e7d32;
+}
+
+.alert.error {
+  background: #ffebee;
+  color: #c62828;
+}
+
+.badge {
+  display: inline-block;
+  padding: 4px 12px;
+  border-radius: 12px;
+  font-size: 12px;
+  font-weight: 600;
+  margin-bottom: 12px;
+}
+
+.badge.pending {
+  background: #fff3e0;
+  color: #e65100;
+}
+
+.badge.approved {
+  background: #e8f5e9;
+  color: #2e7d32;
+}
+
+.badge.rejected {
+  background: #ffebee;
+  color: #c62828;
+}

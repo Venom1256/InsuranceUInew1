@@ -1,0 +1,148 @@
+<div class=" ">
+  <h2>My Profile</h2>
+
+  <!-- ========== STEP 1: REGISTER ========== -->
+  <div *ngIf="!profile" class="card">
+    <h3>1. Add Profile</h3>
+    <form [formGroup]="registerForm" (ngSubmit)="onRegister()">
+      <label>Email *</label>
+      <input type="email" formControlName="email" placeholder="Email" />
+
+      <label>Password *</label>
+      <input type="password" formControlName="password" placeholder="Min 6 chars" />
+
+      <label>First Name *</label>
+      <input formControlName="firstName" placeholder="First Name" />
+
+      <label>Last Name *</label>
+      <input formControlName="lastName" placeholder="Last Name" />
+
+      <label>Mobile Number *</label>
+      <input formControlName="mobileNumber" placeholder="10 digits" maxlength="10" />
+
+      <button type="submit" [disabled]="registerForm.invalid || loading">
+        {{ loading ? 'Creating...' : 'Create Profile' }}
+      </button>
+    </form>
+  </div>
+
+  <!-- ========== STEP 2: ADD KYC (Pending + incomplete) ========== -->
+  <div *ngIf="profile && isKycPending && !isKycComplete && !isEditing" class="card">
+    <h3>2. Complete KYC</h3>
+    <p class="sub-text">
+      Please fill your KYC details. Status:
+      <span class="badge pending">{{ profile.kycStatus }}</span>
+    </p>
+    <form [formGroup]="kycForm" (ngSubmit)="onUpdateKyc()">
+      <label>Date of Birth *</label>
+      <input type="date" formControlName="dateOfBirth" />
+
+      <label>Gender *</label>
+      <select formControlName="gender">
+        <option value="">Select Gender</option>
+        <option value="Male">Male</option>
+        <option value="Female">Female</option>
+        <option value="Other">Other</option>
+      </select>
+
+      <label>PAN Number *</label>
+      <input formControlName="panNumber" placeholder="ABCDE1234F" maxlength="10" />
+
+      <label>Aadhaar Number *</label>
+      <input formControlName="aadhaarNumber" placeholder="12 digits" maxlength="12" />
+
+      <button type="submit" [disabled]="kycForm.invalid || loading">
+        {{ loading ? 'Saving...' : 'Submit KYC' }}
+      </button>
+    </form>
+  </div>
+
+  <!-- ========== STEP 3A: KYC APPROVED (Read Only) ========== -->
+  <div *ngIf="profile && isKycApproved && !isEditing" class="card">
+    <h3>Profile Details</h3>
+    <div class="badge approved">KYC Approved</div>
+    <div class="info-grid">
+      <p><strong>Customer Code:</strong> {{ profile.customerCode }}</p>
+      <p><strong>Email:</strong> {{ profile.email }}</p>
+      <p><strong>Name:</strong> {{ profile.firstName }} {{ profile.lastName }}</p>
+      <p><strong>Mobile:</strong> {{ profile.mobileNumber }}</p>
+      <p><strong>DOB:</strong> {{ profile.dateOfBirth | date:'dd-MM-yyyy' }}</p>
+      <p><strong>Gender:</strong> {{ profile.gender }}</p>
+      <p><strong>PAN:</strong> {{ profile.panNumber }}</p>
+      <p><strong>Aadhaar:</strong> {{ profile.aadhaarNumber }}</p>
+    </div>
+
+  
+  </div>
+
+  <!-- ========== STEP 3B: KYC NOT APPROVED (Edit Allowed) ========== -->
+  <div *ngIf="profile && !isKycApproved && isKycComplete && !isEditing" class="card">
+    <h3>Profile Details</h3>
+    <div class="badge" [class.pending]="isKycPending" [class.rejected]="profile.kycStatus === 'Rejected'">
+      KYC {{ profile.kycStatus }}
+    </div>
+    <div class="info-grid">
+      <p><strong>Customer Code:</strong> {{ profile.customerCode }}</p>
+      <p><strong>Email:</strong> {{ profile.email }}</p>
+      <p><strong>Name:</strong> {{ profile.firstName }} {{ profile.lastName }}</p>
+      <p><strong>Mobile:</strong> {{ profile.mobileNumber }}</p>
+      <p><strong>DOB:</strong> {{ profile.dateOfBirth | date:'dd-MM-yyyy' }}</p>
+      <p><strong>Gender:</strong> {{ profile.gender }}</p>
+      <p><strong>PAN:</strong> {{ profile.panNumber }}</p>
+      <p><strong>Aadhaar:</strong> {{ profile.aadhaarNumber }}</p>
+    </div>
+
+    <div class="actions">
+      <button (click)="isEditing = true">Edit Profile</button>
+      <!-- <button class="btn-danger" (click)="onDelete()" [disabled]="loading">
+        Delete My Account
+      </button> -->
+    </div>
+  </div>
+
+  <!-- ========== EDIT MODE (Only when KYC not Approved) ========== -->
+  <div *ngIf="profile && isEditing && !isKycApproved" class="card">
+    <h3>Edit Profile</h3>
+    <form [formGroup]="profileForm" (ngSubmit)="onUpdateProfile()">
+      <label>First Name *</label>
+      <input formControlName="firstName" />
+
+      <label>Last Name *</label>
+      <input formControlName="lastName" />
+
+      <label>Mobile Number *</label>
+      <input formControlName="mobileNumber" maxlength="10" />
+
+      <label>Date of Birth *</label>
+      <input type="date" formControlName="dateOfBirth" />
+
+      <label>Gender *</label>
+      <select formControlName="gender">
+        <option value="">Select Gender</option>
+        <option value="Male">Male</option>
+        <option value="Female">Female</option>
+        <option value="Other">Other</option>
+      </select>
+
+      <label>PAN Number *</label>
+      <input formControlName="panNumber" maxlength="10" />
+
+      <label>Aadhaar Number *</label>
+      <input formControlName="aadhaarNumber" maxlength="12" />
+
+      <div class="actions">
+        <button type="submit" [disabled]="profileForm.invalid || loading">
+          {{ loading ? 'Saving...' : 'Save Changes' }}
+        </button>
+        <button type="button" class="btn-secondary" (click)="cancelEdit()">
+          Cancel
+        </button>
+      </div>
+    </form>
+  </div>
+
+  <!-- Alert Message -->
+  <div *ngIf="message" class="alert" [class.error]="isError">
+    {{ message }}
+  </div>
+</div>
