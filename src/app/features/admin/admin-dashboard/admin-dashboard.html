@@ -1,1 +1,101 @@
-<p>admin-dashboard works!</p>
+<div class="container-fluid mt-4">
+
+    <h2 class="mb-4 fw-bold text-primary">
+        Admin Dashboard
+    </h2>
+
+    <div class="row g-4">
+
+        <div class="col-xl-3 col-lg-4 col-md-6">
+            <div class="card shadow border-0 dashboard-card">
+                <div class="card-body">
+                    <h6>Total Customers</h6>
+                    <h3>{{ dashboardData?.totalCustomers }}</h3>
+                </div>
+            </div>
+        </div>
+
+        <div class="col-xl-3 col-lg-4 col-md-6">
+            <div class="card shadow border-0 dashboard-card">
+                <div class="card-body">
+                    <h6>Total Agents</h6>
+                    <h3>{{ dashboardData?.totalAgents }}</h3>
+                </div>
+            </div>
+        </div>
+
+        <div class="col-xl-3 col-lg-4 col-md-6">
+            <div class="card shadow border-0 dashboard-card">
+                <div class="card-body">
+                    <h6>Total Policies</h6>
+                    <h3>{{ dashboardData?.totalPolicies }}</h3>
+                </div>
+            </div>
+        </div>
+
+        <div class="col-xl-3 col-lg-4 col-md-6">
+            <div class="card shadow border-0 dashboard-card">
+                <div class="card-body">
+                    <h6>Active Policies</h6>
+                    <h3>{{ dashboardData?.activePolicies }}</h3>
+                </div>
+            </div>
+        </div>
+
+        <div class="col-xl-3 col-lg-4 col-md-6">
+            <div class="card shadow border-0 dashboard-card">
+                <div class="card-body">
+                    <h6>Total Claims</h6>
+                    <h3>{{ dashboardData?.totalClaims }}</h3>
+                </div>
+            </div>
+        </div>
+
+        <div class="col-xl-3 col-lg-4 col-md-6">
+            <div class="card shadow border-0 dashboard-card">
+                <div class="card-body">
+                    <h6>Pending Claims</h6>
+                    <h3>{{ dashboardData?.pendingClaims }}</h3>
+                </div>
+            </div>
+        </div>
+
+        <div class="col-xl-3 col-lg-4 col-md-6">
+            <div class="card shadow border-0 dashboard-card">
+                <div class="card-body">
+                    <h6>Total Revenue</h6>
+                    <h3>₹{{ dashboardData?.totalRevenue }}</h3>
+                </div>
+            </div>
+        </div>
+
+        <div class="col-xl-3 col-lg-4 col-md-6">
+            <div class="card shadow border-0 dashboard-card">
+                <div class="card-body">
+                    <h6>Monthly Revenue</h6>
+                    <h3>₹{{ dashboardData?.monthlyRevenue }}</h3>
+                </div>
+            </div>
+        </div>
+
+        <div class="col-xl-3 col-lg-4 col-md-6">
+            <div class="card shadow border-0 dashboard-card">
+                <div class="card-body">
+                    <h6>Total Agent Commission</h6>
+                    <h3>₹{{ dashboardData?.totalAgentCommission }}</h3>
+                </div>
+            </div>
+        </div>
+
+        <div class="col-xl-3 col-lg-4 col-md-6">
+            <div class="card shadow border-0 dashboard-card">
+                <div class="card-body">
+                    <h6>Pending Premium Amount</h6>
+                    <h3>₹{{ dashboardData?.pendingPremiumAmount }}</h3>
+                </div>
+            </div>
+        </div>
+
+    </div>
+
+</div>
